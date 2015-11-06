@@ -1,0 +1,187 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+ <style>
+        #play{
+            width:600px;
+            height:500px;
+            background-color:#000;
+        }
+
+        #tangmu{
+            width:600px;
+            height:500px;
+            background-color:#fff;
+            z-index:9999;
+            background-color: rgba(000, 1, 000, 0.1);
+        }
+
+        .textStyle{
+            position:absolute;
+            font-size:24px;
+            color:#fff;
+        }
+    </style>
+</head>
+
+<body>
+	<meta charset="utf-8">
+	<title>HelloWorld Web sockets</title>
+	<script type="text/javascript" src="./js/jquery-1.11.0.js"></script>
+	<script language="javascript" type="text/javascript">
+		$(function() {
+			//var wsUri = getRootUri() + "/WebSocketTest/hello";
+			var date;
+			date++;
+			var wsUri = "ws://112.74.205.71:8080/WebSocketTest/hello"
+			var websocket = new WebSocket(wsUri);
+			function getRootUri() {
+				return "ws://"
+						+ (document.location.hostname == "" ? "localhost"
+								: document.location.hostname)
+						+ ":"
+						+ (document.location.port == "" ? "8080"
+								: document.location.port);
+			}
+
+			/* 
+			   websocket.onopen = function(evt) {
+			       onOpen(evt);
+			   };
+			 */websocket.onmessage = function(evt) {
+				onMessage(evt.data);
+			};
+
+			$('#Send').on('click', function() {
+
+				var textID = $('#textID').val();
+				var Username = $('#Username').val();
+
+				// 发送消息
+				websocket.send(JSON.stringify({
+
+					textID : textID,
+					Username : Username
+				}));
+				// 清空消息输入框
+				document.getElementById("textID").value = "";
+
+			});
+
+			/*      function onOpen(evt) {
+			         writeToScreen("Connected to Endpoint!");
+			         doSend(textID.value);
+			
+			     } */
+
+			function onMessage(evt) {
+				evt = JSON.parse(evt);
+                //tangmu(evt.Username+":"+evt.textID);
+                tangmu(evt.textID);
+				//writeToScreen(evt.Username + ":" + evt.textID);
+			}
+
+			function onError(evt) {
+				writeToScreen('<span style="color: red;">ERROR:</span> '
+						+ evt.data);
+			}
+
+			/*   function doSend(message) {
+			      writeToScreen("Message Sent: " + message);
+			      websocket.send(message);
+			  } */
+
+			function writeToScreen(message) {
+				var pre = document.createElement("p");
+				pre.style.wordWrap = "break-word";
+				pre.innerHTML = message;
+				output1.appendChild(pre);
+				output.appendChild(pre);
+				
+			}
+			/*   window.addEventListener("load", init, false); */
+		});
+
+        var sis = new Array();
+        var num=0;
+            function tangmu(text){
+                var si;
+                var nu;
+                nu=++num;
+            var text = text;
+            var tangmu = document.getElementById("tangmu");
+
+            var textStyle="<font class='textStyle' id='"+num+"'><i style='right:20px;top:0px;opacity:0.6;color:"+getRandomColor()+";'>"+text+"</i></font>";
+
+            mathHeight = Math.round(Math.random()*tangmu.offsetHeight)+"px";
+
+            var textLeft=tangmu.offsetWidth+"px";
+
+            tangmu.innerHTML+=textStyle;
+
+            var textStyleObj = document.getElementById(num);
+
+            textStyleObj.style.left=textLeft;
+            textStyleObj.style.top=mathHeight;
+
+            var x=parseInt(textStyleObj.style.left);
+
+            si = setInterval("xunhuan("+nu+","+si+")",80);
+           sis.push(si);
+        }
+        function xunhuan(id,si){
+            var textStyleObj = document.getElementById(id);
+          /*  left= textStyleObj.style.left=;*/
+
+            var x=parseInt(textStyleObj.style.left);
+
+            if(x<-100){
+                document.getElementById("tangmu").removeChild(document.getElementById(id));/*getElementById("tangmu").innerHTML=""*/
+                clearInterval(sis.shift());
+            }else{
+              //  x-=18;
+            	 x-=5;
+            }
+
+            textStyleObj.style.left=x+"px";
+        }
+        //获取随机颜色
+        function getRandomColor(){
+
+            return '#' + (function(h){
+
+                return new Array(7 - h.length).join("0") + h
+
+            }
+
+                    )((Math.random() * 0x1000000 << 0).toString(16))
+
+        }
+	</script>
+
+  <div id="play">
+            <div id="tangmu">
+
+            </div>
+        </div>
+		<div id="output"></div>
+	<h1 style="text-align: center;">
+		Hello World WebSocket Client
+		</h2>
+
+		<br>
+
+		<div style="text-align: center;">
+			<form action="">
+				<input id="Send" value="Send" type="button"> <input
+					id="textID" name="message" value="" type="text"><br> <input
+					id="Username" name="Username" value="" type="text"><br>
+			</form>
+		</div>
+		<div id="output1"></div>
+		
+		
+		
+		
+</body>
+</html>

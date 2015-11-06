@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>发送弹幕</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+<!--Google Fonts-->
+<link href='http://fonts.useso.com/css?family=Roboto:500,900italic,900,400italic,100,700italic,300,700,500italic,100italic,300italic,400' rel='stylesheet' type='text/css'>
+<link href='http://fonts.useso.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<!--Google Fonts-->
+
+</head>
+
+<body>
+	<script type="text/javascript" src="./js/jquery-1.11.0.js"></script>
+	<script language="javascript" type="text/javascript">
+		$(function() {
+		
+
+			$('#Send').on('click', function() {
+
+				var textID = $('#textID').val();
+				var Username = $('#Username').val();
+		if(textID==""|Username==""){
+			alert("昵称和弹幕内容需输入才能send");
+			return;
+		}
+				//alert(textID+Username);
+				$.ajax({
+					//url : "senddanmu?textID="+textID+"&Username="+Username,
+					url : "senddanmu",
+					cache : false,
+					type : "POST",
+				//	dataType : "json",
+				/* 	data : JSON.stringify(textID+","+Username), */
+			//	data: {textID:"John",location:"Boston"},
+					data: "textID="+textID+"&Username="+Username,
+				//contentType : "application/json", // 这个属性必须加上去，否则后台无法接受数据
+					success : function(json) {
+					var x = JSON.parse(json);
+						//var result1 =  json.result;
+					//	alert(x);
+						// console.log(x.result)
+							if (x.result == "ok") {
+								
+								alert("弹幕发送成功！");
+							
+							} else {
+								alert("ip被封禁并已经记录！");
+								
+							}
+					}
+				});
+				// 清空消息输入框
+				document.getElementById("textID").value = "";
+
+			});
+		
+		});
+
+      
+	</script>
+	<div class="login">
+	<h2>JavaGR_ais</h2>
+	<div class="login-top">
+		<h1>课堂实时弹幕</h1>
+		<form>
+			<input type="text"  value="你要发送的弹幕,不能超过20个字符,嘻嘻" id="textID" maxlength="20" onfocus="this.value = '';"  >
+			<input type="text" id="Username" value="你的昵称,嘻嘻" maxlength="8" onfocus="this.value = '';" >
+	 		<div ><img src="images/danmu.jpg" id="Send" style="margin: 0px auto;"></div>
+	    </form>
+	 
+	</div>
+
+</div>	
+
+<!-- 	<div style="text-align: center;">
+		<form action="">
+			<input id="Send" value="Send" type="button"> <input
+				id="textID" name="message" value="" type="text"><br> <input
+				id="Username" name="Username" value="" type="text"><br>
+		</form>
+	</div> -->
+</body>
+</html>

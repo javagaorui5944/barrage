@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>提问</title>
+	<style type="text/css">
+		body{font-size: 14px;}
+		.content{
+			width: 800px;
+			margin: 0 auto;
+		}
+	</style>
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $.ajax({
+                type: 'post',
+                url: 'getDanmu',
+                dataType: 'json',
+                cache : false,
+                success:function(data) {
+                	console.log(data);
+                	var oTest1,newNode1="";
+            		oTest1 = document.getElementById("content"); 
+            		oTest1.innerHTML="";
+                //    var content=$("#content");
+                 //   data=JSON.parse(data);
+                            for(var x=0;data.danmu.length;x++ ){
+                                    // view("修改成功！");
+                                    console.log(data.danmu[0].d_Id);
+                               //     content = document.createElement("li");
+                                    oTest1.innerHTML+="<li>"+"ip:"+data.danmu[x].d_Ip+"昵称:"+data.danmu[x].d_UserName+"   问题"+data.danmu[x].d_Text+"    MD5唯一验证代码："+data.danmu[x].d_Id+" count"+data.danmu[x].d_count+"</li>";
+
+                                 };
+                                 oTest1.innerHTML =  newNode1
+
+                         },
+                      error : function() {
+                           // view("异常！");
+                           alert("异常！");
+                      }
+
+
+
+            });
+
+
+
+        });
+    </script>
+</head>
+<body>
+	<h1>所提问题</h1>
+	<div class="content" id="content">
+<ul id="content"></ul>
+</div>
+</body>
+</html>
